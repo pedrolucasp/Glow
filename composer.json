@@ -1,0 +1,30 @@
+{
+    "name": "root/glow",
+    "description": "WIP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pedro Lucas Porcellis",
+            "email": "pedrolucasporcellis@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "monolog/monolog": "~1.0",
+        "psy/psysh": "@stable",
+        "vlucas/phpdotenv": "^2.1@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8",
+        "mockery/mockery": "^0.9.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Glow\\": "src/"
+        },
+        "classmap": [
+            "src/"
+        ]
+    },
+    "minimum-stability": "dev"
+}

@@ -1,10 +1,10 @@
 <?php
 
-  namespace Glow\Foundation;
+namespace Glow\Foundation;
 
-class Application extends Container {
+class Application {
 
-  protected static $version;
+  protected static $version = "0.0.0";
 
   protected $basePath;
 
@@ -18,14 +18,19 @@ class Application extends Container {
 
   protected $environment;
 
-  public function __construct($basePath, $appName = "App") {
+  public function __construct($container, $basePath, $appName = "App") {
     $this->basePath = $basePath;
+    $this->container = $container;
     $this->appName  = $appName;
-    $this->bootstrapApplication();
+    // $this->bootstrapApplication();
   }
 
   public function version(){
-    return $this->appName . " -  Version " . $this->version;
+    return $this->appName . " - Version " . self::$version;
+  }
+
+  public function getAppName(){
+    return $this->appName;
   }
 
   public function registerPaths(){
@@ -39,20 +44,20 @@ class Application extends Container {
   }
 
   public function dotEnv(){
-    $lines = file([$_DOCUMENT_ROOT] . '.env');
-    $regex = "/([^,=]+)=([^,=])/";
-    foreach ($lines as $line) {
-      preg_match_all($regex, $line, $result);
-      $this->environment = array_combine($r[0], $r[1]);
+    $this->environment = new \Dotenv\Dotenv($this->basePath);
+    $this->environment->load();
+  }
+
+  public function show($key, $defaultValue = null){
+    if(!isset($this->environment)){
+      $this->dotEnv();
     }
-  }
 
-  public function env($key, $defaultValue){
-    return searchEnv($key) || $defaultValue;
-  }
+    $value = getenv($key);
+    return ($value == false ? $defaultValue : $value);
 
-  public function searchEnv($key){
-    return array_search($this->enviroment, $key);
   }
 
 }
+
+?>
